@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class ClienteRecomendaciones extends RepresentationModel<ClienteRecomendaciones> {
     private Cliente cliente;
     private List<UsuarioVino> ultimosVinos;       // 5 últimos añadidos

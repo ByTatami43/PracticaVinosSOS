@@ -65,24 +65,26 @@ public class ClientesController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}/recomendaciones")
     public ResponseEntity<ClienteRecomendaciones> getRecomendaciones(@PathVariable Integer id){
-        return ResponseEntity.ok(clientesService.obtenerRecomendaciones(id));
+        return ResponseEntity.ok(clientesService.obtenerRecomendaciones(id).add(linkTo(methodOn(ClientesController.class).getRecomendaciones(id)).withSelfRel()));
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}/estadisticas")
     public ResponseEntity<ClienteEstadisticas> getEstadisticas(@PathVariable Integer id,
-                                                               @RequestParam(defaultValue = "", required = false) String bodega,
-                                                               @RequestParam(defaultValue = "", required = false) String origen,
-                                                               @RequestParam(defaultValue = "", required = false) String tipo,
-                                                               @RequestParam(defaultValue = "", required = false) Integer anyo,
-                                                               @RequestParam(defaultValue = "", required = false) String uva,
-                                                               @RequestParam(defaultValue = "", required = false) LocalDate desde,
-                                                               @RequestParam(defaultValue = "", required = false) LocalDate hasta){
+                                                               @RequestParam(required = false) String bodega,
+                                                               @RequestParam(required = false) String origen,
+                                                               @RequestParam(required = false) String tipo,
+                                                               @RequestParam(required = false) Integer anyo,
+                                                               @RequestParam(required = false) String uva,
+                                                               @RequestParam(required = false) LocalDate desde,
+                                                               @RequestParam(required = false) LocalDate hasta){
 
-        return ResponseEntity.ok(clientesService.obtenerEstadisticas(id,bodega,origen,tipo,anyo,uva,desde,hasta));
+        return ResponseEntity.ok(clientesService.obtenerEstadisticas(id,bodega,origen,tipo,anyo,uva,desde,hasta).add(linkTo(methodOn(ClientesController.class)
+                .getEstadisticas(id,bodega,origen,tipo,anyo,uva,desde,hasta)).withSelfRel()));
     }
 
+    @PostMapping
 
 
 }
