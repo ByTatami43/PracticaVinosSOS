@@ -42,6 +42,10 @@ public class ClientesService {
         return repository.findById(id);
     }
 
+    public boolean existeClientePorId(Integer id){
+        return repository.existsById(id);
+    }
+
     public Page<Cliente> buscarClientes(String contains, int page, int size){
         Pageable paginable = PageRequest.of(page,size);
         if(contains!=null && !contains.isEmpty()){

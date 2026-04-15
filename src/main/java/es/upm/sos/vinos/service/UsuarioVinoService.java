@@ -51,7 +51,7 @@ public class UsuarioVinoService {
         return usuarioVinoRepository.save(relacion);
     }
 
-    public void eliminaVinoDeLista(Integer vinoId, Integer clienteId, Integer puntuacion){
+    public void eliminaVinoDeLista(Integer vinoId, Integer clienteId){
         UsuarioVinoId usuarioVinoId = new UsuarioVinoId(clienteId,vinoId);
 
         if(!usuarioVinoRepository.existsById(usuarioVinoId)){
@@ -68,24 +68,34 @@ public class UsuarioVinoService {
         return buscarRelacionPorId(new UsuarioVinoId(clienteId, vinoId));
     }
 
-    public Page<UsuarioVino> buscarVinosDeSeguidoConFiltros(
-            Integer solicitanteId, Integer seguidoId,
-            String bodega, String origen, String tipo, Integer anyo,
-            LocalDate desde, LocalDate hasta, int page, int size) {
+    public Page<UsuarioVino> buscarVinosDeCliente(
+            Integer clienteId, String bodega, String origen, String tipo,
+            Integer anyo, String uva, LocalDate desde, LocalDate hasta,
+            int page, int size) {
 
-        // Validar que realmente sigue a ese usuario y está ACEPTADA
+        if (!clientesRepository.existsById(clienteId))
+            throw new ClienteNotFoundException(clienteId);
+
+        return usuarioVinoRepository.findByClienteIdConFiltros(
+                clienteId, bodega, origen, tipo, anyo, uva, desde, hasta,
+                PageRequest.of(page, size));
+    }
+
+    public Page<UsuarioVino> buscarVinosDeSeguidoConFiltros(
+            Integer solicitanteId, Integer seguidoId, String bodega, String origen,
+            String tipo, Integer anyo, String uva, LocalDate desde, LocalDate hasta,
+            int page, int size) {
+
         Seguimiento seg = seguimientoRepository
                 .findBySolicitante_IdAndSeguido_Id(solicitanteId, seguidoId)
                 .orElseThrow(() -> new SeguimientoNotFoundException(solicitanteId, seguidoId));
 
-        if (seg.getEstado() != EstadoSeguimiento.ACEPTADA) {
+        if (seg.getEstado() != EstadoSeguimiento.ACEPTADA)
             throw new SeguimientoNotFoundException(solicitanteId, seguidoId);
-        }
 
         return usuarioVinoRepository.findByClienteIdConFiltros(
-                seguidoId, bodega, origen, tipo, anyo, desde, hasta,
-                PageRequest.of(page, size)
-        );
+                seguidoId, bodega, origen, tipo, anyo, uva, desde, hasta,
+                PageRequest.of(page, size));
     }
 
 }

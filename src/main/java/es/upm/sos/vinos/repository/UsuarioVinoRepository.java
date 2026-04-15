@@ -4,6 +4,7 @@ import es.upm.sos.vinos.model.Cliente;
 import es.upm.sos.vinos.model.UsuarioVino;
 import es.upm.sos.vinos.model.UsuarioVinoId;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,6 +33,7 @@ public interface UsuarioVinoRepository extends JpaRepository<UsuarioVino, Usuari
             @Param("origen") String origen,
             @Param("tipo") String tipo,
             @Param("anyo") Integer anyo,
+            @Param("uva") String uva,
             @Param("desde") LocalDate desde,
             @Param("hasta") LocalDate hasta,
             Pageable pageable

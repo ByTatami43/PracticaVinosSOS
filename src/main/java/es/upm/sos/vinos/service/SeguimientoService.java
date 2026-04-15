@@ -54,6 +54,17 @@ public class SeguimientoService {
         return seguimientoRepository.findBySolicitante_IdAndSeguido_Id(solicitanteId, seguidoId)
                 .orElseThrow(() -> new SeguimientoNotFoundException(solicitanteId, seguidoId));
     }
+    public Page<Seguimiento> buscarSeguimientos(Integer clienteId, EstadoSeguimiento estado, int page, int size) {
+        if (!clientesRepository.existsById(clienteId))
+            throw new ClienteNotFoundException(clienteId);
+
+        Pageable paginable = PageRequest.of(page, size);
+        if (estado != null) {
+            return seguimientoRepository.findBySeguido_IdAndEstado(clienteId, estado, paginable);
+        }
+        return seguimientoRepository.findBySeguido_Id(clienteId, paginable);
+    }
+
     // Solicitudes enviadas por un cliente (él es el solicitante)
     public Page<Seguimiento> buscarSolicitudesEnviadas(Integer clienteId, int page, int size) {
         if (!clientesRepository.existsById(clienteId))
