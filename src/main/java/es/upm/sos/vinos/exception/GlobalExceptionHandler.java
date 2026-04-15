@@ -1,6 +1,7 @@
 package es.upm.sos.vinos.exception;
 
 
+import es.upm.sos.vinos.model.Vino;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -44,6 +45,13 @@ public class GlobalExceptionHandler {
     ErrorMessage clienteExistsHandler(ClienteExistsException ex){
         return new ErrorMessage(ex.getMessage());
     }
+
+    @ExceptionHandler(VinoExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    ErrorMessage vinoExistsHandler(VinoExistsException ex){
+        return new ErrorMessage(ex.getMessage());
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class) //Ejecuta este metodo si se envia un JSON no valido
     @ResponseStatus(HttpStatus.BAD_REQUEST) //Asegura que el cliente reciba codigo 400 BAD_REQUEST

@@ -28,9 +28,9 @@ public class VinoService {
         return repository.findById(id);
     }
 
-    public Page<Vino> buscarVinos(String tipo, String nombre, String uva, String origen, String bodega, int page, int size){
+    public Page<Vino> buscarVinos(String tipo, String uva, String origen, String bodega, int page, int size){
         Pageable paginable = PageRequest.of(page,size);
-        return repository.findByFiltros(tipo,nombre,uva,origen,bodega,paginable);
+        return repository.findByFiltros(tipo,uva,origen,bodega,paginable);
     }
 
     public Vino actualizarVino(Integer id, Vino vino){

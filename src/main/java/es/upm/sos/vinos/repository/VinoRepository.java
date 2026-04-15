@@ -13,12 +13,10 @@ public interface VinoRepository extends JpaRepository<Vino,Integer> {
     Page<Vino> findByNombreStartsWith(@Param("starts_with") String nombreEmpiezaCon, Pageable paginable);
     @Query("SELECT v FROM Vino v WHERE " +
             "(:tipo IS NULL OR v.tipoVino = :tipo) AND " +
-            "(:nombre IS NULL OR v.nombre = :nombre) AND " +
             "(:uva IS NULL OR v.uva = :uva) AND " +
             "(:origen IS NULL OR v.origen = :origen) AND " +
             "(:bodega IS NULL OR v.bodega = :bodega)")
     Page<Vino> findByFiltros(@Param("tipo") String tipo,
-                             @Param("nombre") String nombre,
                              @Param("uva") String uva,
                              @Param("origen") String origen,
                              @Param("bodega") String bodega,
